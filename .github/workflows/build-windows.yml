@@ -1,0 +1,36 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements_win.txt
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller --noconfirm --onedir --noconsole --name "Murmur" --add-data "settings_server.py;." --add-data "context_engine.py;." --add-data "llm_engine.py;." --add-data "hipaa_engine.py;." --add-data "app_icon.ico;." --icon "app_icon.ico" "daemon_win.py"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Murmur-Windows
+        path: dist/Murmur

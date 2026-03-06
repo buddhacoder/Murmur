@@ -1,0 +1,9 @@
+streamlit
+requests
+faster-whisper
+sounddevice
+scipy
+numpy
+pynput
+pyperclip
+rumps

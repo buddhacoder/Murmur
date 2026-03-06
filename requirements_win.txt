@@ -1,0 +1,8 @@
+faster-whisper
+PyQt6
+sounddevice
+numpy
+pyperclip
+pynput
+pygetwindow
+requests
