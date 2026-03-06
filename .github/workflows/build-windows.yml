@@ -27,7 +27,7 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        pyinstaller --noconfirm --onedir --noconsole --name "Murmur" --add-data "settings_server.py;." --add-data "context_engine.py;." --add-data "llm_engine.py;." --add-data "hipaa_engine.py;." --add-data "app_icon.ico;." --icon "app_icon.ico" "daemon_win.py"
+        pyinstaller --noconfirm --onefile --noconsole --name "Murmur" --add-data "settings_server.py;." --add-data "context_engine.py;." --add-data "llm_engine.py;." --add-data "hipaa_engine.py;." --add-data "app_icon.ico;." --icon "app_icon.ico" "daemon_win.py"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
