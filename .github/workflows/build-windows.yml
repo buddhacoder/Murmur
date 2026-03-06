@@ -33,4 +33,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Murmur-Windows
-        path: dist/Murmur
+        path: dist/Murmur.exe
