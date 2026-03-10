@@ -42,3 +42,30 @@ Murmur.dmg
 # Local Settings
 murmur_settings.json
 sessions/
+
+# Debug & test scripts (one-off debugging artifacts)
+test_audio.py
+test_empty.py
+test_say.py
+audio_meter.py
+nohup.out
+debug_*.wav
+
+# macOS TCC / mic permission experiments
+force_mic.m
+force_mic_mac.m
+force_mic_mac
+force_mic_test.m
+force_mic_test
+req_mic.swift
+trigger_mic.swift
+CheckMic.swift
+CheckMic
+test_dlopen.c
+test_dlopen
+wrapper.m
+launch.applescript
+entitlements.plist
+
+# PyInstaller test spec files
+MurmurPyInstaller.spec
