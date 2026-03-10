@@ -34,3 +34,15 @@ jobs:
       with:
         name: Murmur-Windows
         path: dist/Murmur.exe
+
+    - name: Publish to GitHub Releases
+      uses: softprops/action-gh-release@v2
+      if: github.ref == 'refs/heads/main'
+      with:
+        tag_name: latest
+        name: "Murmur for Windows (Latest)"
+        body: "Automated release of the latest Murmur standalone application."
+        files: dist/Murmur.exe
+        make_latest: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
