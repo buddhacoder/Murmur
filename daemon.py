@@ -54,7 +54,21 @@ WHISPER_MODEL     = "mlx-community/whisper-small.en-mlx"
 SAMPLE_RATE       = 16_000
 CHUNK_MS          = 100
 CHUNK_FRAMES      = int(SAMPLE_RATE * CHUNK_MS / 1000)
-SILENCE_THRESHOLD = 450    # RMS below = silence
+
+# ⚠️ SILENCE_THRESHOLD: Keep LOW (10-20) for Studio Display / built-in mics.
+# The Studio Display mic has a natively quiet output. An RMS of 20 is typical
+# for a person speaking clearly at normal volume. Setting this above ~50 will
+# cause Murmur to treat real speech as silence and never flush it to Whisper.
+# If you're getting no transcription at all, lower this first.
+SILENCE_THRESHOLD = 15
+
+# ⚠️ DIGITAL_GAIN: Software volume amplifier applied to raw audio before Whisper.
+# Needed because mlx_whisper hallucinates "You" on near-silent audio — it's a
+# known model bug, not an error to handle. 15x (~23dB) works well for the
+# Studio Display mic. If you're getting "You" consistently, increase this.
+# If transcription is garbled/repeated, lower it. See TROUBLESHOOTING.md.
+DIGITAL_GAIN      = 15.0
+
 SILENCE_CHUNKS    = 15     # 1500 ms of silence → flush phrase
 MIN_SPEECH_CHUNKS = 8      # 800 ms of speech needed before transcribing
 HOTKEY_COMBO      = {keyboard.Key.alt_r}
@@ -310,7 +324,10 @@ def paste_text(text: str) -> None:
 
 def transcribe_audio(audio: np.ndarray) -> str:
     try:
+        # Apply digital gain to boost quiet macOS microphone input
         audio_float = audio.astype(np.float32) / 32768.0
+        audio_float = audio_float * DIGITAL_GAIN
+        
         result = mlx_whisper.transcribe(
             audio_float,
             path_or_hf_repo=WHISPER_MODEL,
@@ -456,6 +473,21 @@ class StreamingSession:
             if item is None:
                 break
             audio, final = item
+            
+            import wave
+            from datetime import datetime
+            stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+            debug_file = SESSIONS_DIR / f"debug_{stamp}.wav"
+            try:
+                with wave.open(str(debug_file), "wb") as wf:
+                    wf.setnchannels(1)
+                    wf.setsampwidth(2)
+                    wf.setframerate(SAMPLE_RATE)
+                    wf.writeframes(audio.tobytes())
+                print(f"[debug] Saved {len(audio)/SAMPLE_RATE:.2f}s of raw audio to {debug_file.name}")
+            except Exception as e:
+                print(f"[debug error] {e}")
+
             text = transcribe_audio(audio)
             
             if text:
