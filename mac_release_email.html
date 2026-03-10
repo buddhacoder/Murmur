@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murmur macOS Release</title>
+  <style>
+    body {
+      background-color: #f7f9fc;
+      color: #1a202c;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      width: 100%;
+      background: linear-gradient(135deg, #eff6ff 0%, #fdf4ff 100%);
+      padding: 60px 20px;
+      display: flex;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 620px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    }
+
+    .header {
+      text-align: center;
+      padding: 50px 30px 10px;
+    }
+
+    .app-icon {
+      width: 110px;
+      height: auto;
+      margin-bottom: 16px;
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .content {
+      padding: 20px 50px 50px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #111827;
+      margin-bottom: 24px;
+      letter-spacing: -1.5px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #475569;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .highlight-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 30px;
+      margin: 36px 0;
+      text-align: left;
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+    }
+
+    .highlight-card h3 {
+      margin: 0 0 20px 0;
+      font-size: 20px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .feature-ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+    }
+
+    .feature-ul li {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .feature-ul li:last-child {
+      margin-bottom: 0;
+    }
+
+    .feature-ul li strong {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .cta-container {
+      margin-top: 48px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 20px 52px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 100px;
+      background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(168, 85, 247, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <img
+          src="data:image/png;base64,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"
+          alt="Murmur Logo" class="app-icon">
+      </div>
+
+      <div class="content">
+        <h1>The fastest, most private way to dictate on your Mac.</h1>
+
+        <p>
+          As a board-certified anesthesiologist and developer, I spend countless hours typing detailed clinical notes
+          and code. I built Murmur because I needed a <strong>blazing-fast, highly accurate</strong> voice-to-text app
+          that typed <em>everywhere</em> I
+          placed my cursor—<u
+            style="text-underline-offset: 3px; text-decoration-color: #a855f7; text-decoration-thickness: 2px;">without
+            uploading my private recordings to the cloud.</u>
+        </p>
+
+        <p>
+          Most dictation software is sluggish, incorrectly types words, or forces you to send your personal data to
+          remote servers. <strong>Murmur fixes this by instantly typing what you say right on your machine.</strong>
+        </p>
+
+        <div class="highlight-card">
+          <h3>Why Murmur is better:</h3>
+          <ul class="feature-ul">
+            <li><u style="text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Lightning Fast:</u>
+              <em>Zero latency.</em> Your words appear exactly where your cursor is.
+            </li>
+            <li><u style="text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">100% Local &
+                Private:</u> Audio <strong>never</strong> leaves your computer. Powered entirely by local AI
+              models.</li>
+            <li><u style="text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">No
+                Subscriptions:</u> Just an honest, standalone tool you download and run <em>without
+                arbitrary limits.</em></li>
+          </ul>
+        </div>
+
+        <p style="font-size: 17px; text-align: center;">
+          I'm incredibly excited to finally get the native macOS release into your hands.
+        </p>
+
+        <div class="cta-container">
+          <a href="https://github.com/buddhacoder/Murmur/archive/refs/heads/main.zip" class="btn-primary">Download for
+            macOS (.zip)</a>
+          <p style="font-size: 14px; color: #64748b; margin-top: 16px;">
+            Compatible with macOS (Apple Silicon & Intel).
+          </p>
+        </div>
+
+        <div class="highlight-card" style="margin-top: 32px; margin-bottom: 32px;">
+          <h3>🕹️ How to Use Murmur:</h3>
+          <ol style="margin: 0; padding-left: 20px; font-size: 16px; color: #334155; line-height: 1.6;">
+            <li style="margin-bottom: 12px;"><strong>Download & Extract:</strong> Download the <code
+                style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 14px; color: #0f172a;">.zip</code>
+              file, double-click to extract it, and open the <code
+                style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 14px; color: #0f172a;">Murmur-main</code>
+              folder.</li>
+            <li style="margin-bottom: 12px;"><strong>Install & Run:</strong> Open the <strong>Terminal</strong> app on
+              your Mac. Drag and drop the <code
+                style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 14px; color: #0f172a;">install.sh</code>
+              file into the Terminal window and press Enter. Once complete, drag and drop <code
+                style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 14px; color: #0f172a;">run.sh</code>
+              and press Enter to start Murmur!</li>
+            <li><strong>Hold & Speak:</strong> Place your cursor anywhere, press and hold the <strong
+                style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; color: #0f172a;">Right-Option</strong>
+              key on your keyboard. Speak, release the key, and your text will instantly appear!</li>
+          </ol>
+        </div>
+
+        <div style="margin-top: 48px; border-top: 1px solid #f1f5f9; padding-top: 32px; text-align: left;">
+          <h4 style="margin: 0 0 12px 0; color: #0f172a; font-size: 16px;">Resources & Support</h4>
+          <p style="font-size: 15px; color: #475569; margin: 0 0 16px 0;">
+            Need help getting started or want to see the roadmap?
+          </p>
+          <ul style="padding-left: 20px; color: #3b82f6; font-size: 15px; margin: 0 0 32px 0; line-height: 1.6;">
+            <li><a href="https://github.com/buddhacoder/Murmur" style="color: #3b82f6; text-decoration: none;">View the
+                Documentation</a></li>
+            <li><a href="https://x.com/rduclasjr" style="color: #3b82f6; text-decoration: none;">Follow me on X
+                (@rduclasjr)</a></li>
+          </ul>
+
+          <p style="font-size: 16px; color: #475569; margin: 0; line-height: 1.5;">
+            Happy dictating,<br>
+            <strong style="color: #0f172a;">Dr. Reynold Duclas Jr.</strong><br>
+            <span style="font-size: 14px; color: #64748b;">Founder Tamamie, the AI doc.</span>
+          </p>
+        </div>
+      </div>
+
+      <div
+        style="background-color: #f8fafc; padding: 32px 40px; text-align: center; border-top: 1px solid #e2e8f0; border-radius: 0 0 24px 24px;">
+        <p style="font-size: 13px; color: #94a3b8; margin: 0 0 8px 0; line-height: 1.5;">
+          <a href="https://tamamie.com"
+            style="color: #94a3b8; text-decoration: none; font-weight: bold;">Tamamie.com</a><br>
+          <a href="https://theaidoc.ai" style="color: #94a3b8; text-decoration: none;">theaidoc.ai</a>
+        </p>
+        <p style="font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.5;">
+          You received this email because you subscribed to updates on our website.<br>
+          <a href="#" style="color: #94a3b8; text-decoration: underline;">Unsubscribe</a> | <a href="#"
+            style="color: #94a3b8; text-decoration: underline;">Privacy Policy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
