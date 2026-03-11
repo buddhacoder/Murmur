@@ -426,11 +426,11 @@ class StreamingSession:
         
         # Whisper often auto-punctuates spoken punctuation words (e.g. "sentence, period.", "Wait, comma, what?")
         # These regexes catch the spoken word along with any surrounding auto-punctuation and replace it with the actual symbol.
-        t_mod = re.sub(r'(?i)[,\s]*\bperiod[\.\s]*', '.', t_mod)
-        t_mod = re.sub(r'(?i)[,\s]*\bquestion mark[\.\?\s]*', '?', t_mod)
-        t_mod = re.sub(r'(?i)[,\s]*\bexclamation point[\.\!\s]*', '!', t_mod)
-        t_mod = re.sub(r'(?i)[,\s]*\bcomma[\,\s]*', ',', t_mod)
-        t_mod = re.sub(r'(?i)[,\s]*\bexclamation mark[\.\!\s]*', '!', t_mod)
+        t_mod = re.sub(r'(?i)[,\s]*\bperiod\b[\.\s]*', '.', t_mod)
+        t_mod = re.sub(r'(?i)[,\s]*\bquestion mark\b[\.\?\s]*', '?', t_mod)
+        t_mod = re.sub(r'(?i)[,\s]*\bexclamation point\b[\.\!\s]*', '!', t_mod)
+        t_mod = re.sub(r'(?i)[,\s]*\bcomma\b[\,\s]*', ',', t_mod)
+        t_mod = re.sub(r'(?i)[,\s]*\bexclamation mark\b[\.\!\s]*', '!', t_mod)
         
         # 4. Snippets expansion
         settings = _load_settings()
