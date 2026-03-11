@@ -1,100 +1,34 @@
-# 🔇 Murmur
+# Murmur V1 (The Clinical MVP)
 
-> **Local voice + local AI. No cloud. No subscriptions. Your data stays on your machine.**  
-> Works on **macOS** and **Windows**.
+**Typing is the bottleneck to human thought.** 
+Murmur is a privacy-first, zero-latency Voice-to-Text and Clinical AI Agent. It was built specifically for healthcare professionals and high-security personnel who need the magical dictation experience of modern AI (like Wispr Flow) but demand 100% local processing and strict HIPAA compliance.
 
-Murmur records your voice, transcribes it locally with [faster-whisper](https://github.com/SYSTRAN/faster-whisper), and optionally sends the transcript to a local LLM via [Ollama](https://ollama.com) to clean it up, summarize it, and generate clinical SOAP notes.
+## The Phase 1 MVP Architecture (Current Branch)
+Murmur V1 was designed as a rapid-prototyping MVP to validate local cross-platform audio capture and global hotkey routing.
+*   **Language:** Python
+*   **Transcriber (The Ears):** `faster-whisper` (Local CPU/GPU accelerated via PyTorch)
+*   **The Brain (Local LLM):** `Ollama` running `llama3` for fully offline, air-gapped clinical intelligence (e.g., formatting SOAP notes and extracting the "Patient Vault").
+*   **Cross-Platform:** Supports global Right-Option hotkey detection and synthetic keystroke pasting on both macOS and Windows.
 
-Built for: **doctors, lawyers, finance professionals** — anyone with sensitive data that shouldn't touch the cloud.
+### Why Build Locally?
+In clinical environments, sending audio to third-party APIs can violate compliance or introduce unacceptable psychological friction for physicians. Murmur V1 guarantees that not a single byte of patient audio touches the internet. It runs completely air-gapped, leveraging the doctor's existing Apple Silicon or Windows GPU.
 
----
+***
 
-## Features
+## Where We Are Leaving Off
+Murmur V1 successfully proved the thesis: Local STT is incredibly fast, and local LLMs can seamlessly format EHR notes. We successfully shipped:
+1.  **Mac Release:** A shell-script wrapper that bypasses Gatekeeper and runs the Python environment seamlessly.
+2.  **Windows Release:** A fully automated GitHub Actions pipeline generated a standalone `.exe` distributable.
+3.  **Core Features:** Global hotkey listening, "Command Words" (Punctuation/Formatting), and the `vault/` continuous-memory clinical context builder.
 
-- 🎙️ **Record** — mic capture with `sounddevice` (no binary tools, works Mac + Windows)
-- ✏️ **Transcribe** — `faster-whisper` runs fully on-device
-- 🧠 **Think** — local LLM cleans transcript, writes summaries, SOAP notes, task lists
-- 🏥 **Clinical mode** — SOAP notes, HPI drafts, task lists
-- 💼 **General mode** — for finance, personal notes, meetings
-- 📂 **Patient vault** — per-patient memory in `vault/patient_<id>/` (never cross-contaminates)
-- 🔒 **Privacy controls** — delete audio post-transcription, skip LLM entirely
-- 📁 **Session history** — last 8 sessions listed and inspectable in the UI
+***
 
----
+## Where We Plan to Go: Murmur V2 (The Native Rewrite)
+While V1 is incredibly functional, the 1.5GB Python/PyTorch dependencies limit mass-consumer distribution. We are officially transitioning to **Murmur V2**, a ground-up architectural rewrite stored in a separate repository.
 
-## Quick Start — macOS
+### The V2 Stack (Targeted 50MB Download):
+*   **The Frontend Shell:** Tauri (Rust + React) for gorgeous, lightweight, native cross-platform UI shells.
+*   **The STT Engine:** `whisper.cpp` (C++ implementation) eliminating all Python and PyTorch dependencies, running natively on Mac/Windows.
+*   **The Cloud Routing Array (Option 2):** Moving complex Clinical Formatting (SOAP note generation, Action Item extraction) to ultra-fast, HIPAA-compliant Cloud APIs (like Groq or Azure OpenAI) acting behind a secure proxy. This allows for "silent" prompt updates without users ever downloading new app files.
 
-```bash
-cd ~/projects/Murmur
-bash install.sh
-bash run.sh
-```
-
-## Quick Start — Windows
-
-1. Install [Python 3.10+](https://python.org) — check **"Add to PATH"** during install
-2. Install [Ollama for Windows](https://ollama.com/download/windows)
-3. Double-click **`install.bat`**
-4. Double-click **`run.bat`**
-
-Opens at **http://localhost:8501**
-
----
-
-## Sharing with a Colleague
-
-```bash
-# macOS
-bash share.sh
-
-# Windows — zip the Murmur folder manually, excluding sessions/ and vault/
-```
-
-Your colleague unzips and runs `install.bat` (Windows) or `bash install.sh` (Mac).  
-No recordings, no patient data, no models included in the zip.
-
----
-
-## Privacy Notes
-
-| Item | Status |
-|---|---|
-| Audio/transcripts sent to the cloud | ❌ Never |
-| Models loaded from the cloud at runtime | ❌ Never (downloaded once) |
-| `sessions/` and `vault/` committed to git | ❌ Gitignored |
-
-**Enable FileVault** (Mac) or **BitLocker** (Windows) for full-disk encryption.
-
----
-
-## Model Recommendations by RAM
-
-| RAM | Recommended Model |
-|---|---|
-| 24–32 GB | `llama3.2:3b` (default) |
-| 48–64 GB | `qwen2.5:7b` |
-| 96 GB+ | `llama3.1:70b` (quantized) |
-
----
-
-## Project Structure
-
-```
-Murmur/
-├── app.py          ← Main UI (cross-platform)
-├── prompts.py      ← LLM system prompts
-├── requirements.txt← Python deps
-├── install.sh      ← macOS installer
-├── install.bat     ← Windows installer
-├── run.sh          ← macOS launch (auto-generated)
-├── run.bat         ← Windows launch
-├── share.sh        ← Package for sharing
-├── sessions/       ← Per-recording outputs (gitignored)
-└── vault/          ← Per-patient memory (gitignored)
-```
-
----
-
-## License
-
-Personal use / internal workflows. Not FDA-cleared. Not a medical device.
+Murmur V1 will remain here pristine and functional as the core foundational proof of concept.
